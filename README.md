@@ -1,4 +1,4 @@
-# Airflow RabbitMQ Highly Available Cluster Docker Compose example
+# Multi-Schedulers Airflow and RabbitMQ Highly Available Cluster Docker Compose example
 ## Description
 This configuration example helps to increase the failover of Airflow by using a highly available RabbitMQ cluster and multiple Airflow schedulers. The entire infrastructure (Airflow, RabbitMQ, and PostgreSQL) will be deployed using Docker Compose.
 
