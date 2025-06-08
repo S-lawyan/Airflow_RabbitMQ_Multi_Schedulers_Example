@@ -4,20 +4,30 @@ This configuration example helps improve Airflow's fault tolerance by utilizing 
 
 According to the [RabbitMQ documentation](https://www.rabbitmq.com/docs/clustering#:~:text=(three%2C%20five%2C%20seven%2C%20or%20more)), it's recommended to use at least 3 RabbitMQ cluster nodes. Additionally, there should be an odd number of nodes, with each running on a separate host.
 
+## Features of the RabbitMQ High Availability Cluster Configuration
+
+The `definitions.json` file contains configurations for full cluster mirroring (`"ha-mode": "all"`). This means all queues and messages will be replicated across all nodes. Additionally, the automatic cluster recovery mode is enabled (`"ha-sync-mode": "automatic"`) in case one or more nodes fail.
+
+This configuration ensures that:
+- Airflow continues operating without interruption even if only 1 RabbitMQ node remains available
+- When failed nodes recover, they automatically rejoin the cluster without manual intervention
+- Full message redundancy is maintained across all active nodes
+
 ## Setup Steps
 0. Prerequisite: Docker Compose should be installed on all hosts, and they should be in the same network.
 1. Deploy RabbitMQ nodes on all hosts (3 nodes in this example).
-2. Set up PostgreSQL on a remote host (Airflow documentation recommends keeping the database separate from the main Airflow host).
-3. Configure the Airflow `docker-compose.yml` to connect to PostgreSQL and RabbitMQ (via AMQP):
+   When configuring RabbitMQ, you need to pay special attention to the RABBITMQ_ERLANG_COOKIE parameter. IT MUST BE IDENTICAL ON ALL NODES. Otherwise, clusterization will not occur. 
+3. Set up PostgreSQL on a remote host (Airflow documentation recommends keeping the database separate from the main Airflow host).
+4. Configure the Airflow `docker-compose.yml` to connect to PostgreSQL and RabbitMQ (via AMQP):
 
    | # | Setting | Value |
    |---|---|---|
    | 1 | `AIRFLOW__CELERY__RESULT_BACKEND` | `postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:5432/airflow` |
    | 2 | `AIRFLOW__DATABASE__SQL_ALCHEMY_CONN` | `postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:5432/airflow` |
    | 3 | `AIRFLOW__CELERY__BROKER_URL` | `amqp://admin:admin@${RABBITMQ_MASTER:-rabbitmq-master}:5672/;amqp://admin:admin@${RABBITMQ_SLAVE_1:-rabbitmq-slave1}:5672/;amqp://admin:admin@${RABBITMQ_SLAVE_2:-rabbitmq-slave2}:5672/` |
-
-4. Deploy additional Airflow schedulers on remote hosts using the configuration from the `airflow-schedulers` folder. Airflow documentation recommends having at least 3 schedulers on different servers.
-5. Start Airflow on the main host.
+Attention! The environment block must be the same in all airflow nodes.
+5. Deploy additional Airflow schedulers on remote hosts using the configuration from the `airflow-schedulers` folder. Airflow documentation recommends having at least 3 schedulers on different servers.
+6. Start Airflow on the main host.
 
 ## Bonus
 This configuration uses Statsd-exporter to collect Airflow metrics, available at:
