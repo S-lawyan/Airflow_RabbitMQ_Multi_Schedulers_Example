@@ -1,8 +1,15 @@
 # Airflow RabbitMQ Highly Available Cluster Docker Compose example
 ## Description
-This configuration example helps improve Airflow's fault tolerance by utilizing a highly available RabbitMQ cluster. The entire infrastructure (Airflow, RabbitMQ, and PostgreSQL) will be deployed using Docker Compose.
+This configuration example helps to increase the failover of Airflow by using a highly available RabbitMQ cluster and multiple Airflow schedulers. The entire infrastructure (Airflow, RabbitMQ, and PostgreSQL) will be deployed using Docker Compose.
 
 According to the [RabbitMQ documentation](https://www.rabbitmq.com/docs/clustering#:~:text=(three%2C%20five%2C%20seven%2C%20or%20more)), it's recommended to use at least 3 RabbitMQ cluster nodes. Additionally, there should be an odd number of nodes, with each running on a separate host.
+
+## Features of Multiple Airflow Schedulers Configuration.
+The [Airflow documentation](https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/scheduler.html#running-more-than-one-scheduler) describes the possibility of using multiple schedulers. However, it is not explicitly stated that needs to be done in order to launch an Airflow cluster with multiple schedulers.
+
+So! To run multi-schedulers Airflow cluster, it is necessary to specify the same connection to PostgreSQL in the configuration of each scheduler.
+An example of an additional scheduler configuration can be found in the `airflow-scheduler/docker-compose.yml` file.
+
 
 ## Features of the RabbitMQ High Availability Cluster Configuration
 
