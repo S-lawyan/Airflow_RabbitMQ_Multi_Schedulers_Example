@@ -1,2 +1,2 @@
-# Airflow_RabbitMQ_HA_example
+# Airflow_RabbitMQ_example
 Configuration of airflow using a RabbitMQ high availability cluster as a message broker.
