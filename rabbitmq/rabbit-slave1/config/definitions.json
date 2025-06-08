@@ -1,0 +1,41 @@
+{
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "policies": [
+    {
+      "vhost": "/",
+      "name": "ha-all",
+      "pattern": "",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    }
+  ],
+  "queues": [],
+  "exchanges": [],
+  "users": [
+    {
+      "name": "admin",
+      "password": "admin",
+      "tags": [
+        "administrator"
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ]
+}
+

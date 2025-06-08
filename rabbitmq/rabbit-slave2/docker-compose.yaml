@@ -1,0 +1,33 @@
+x-default-healthcheck: &default-healthcheck
+  interval: 15s
+  timeout: 10s
+  retries: 10
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.13.3-management
+    container_name: rabbit-slave2
+    hostname: rabbit-slave2
+    environment:
+      RABBITMQ_ERLANG_COOKIE: 'YETHJRRJGCCDICDVWSOP'
+    volumes:
+      - ${WORK_DIR}:/var/lib/rabbitmq/mnesia/
+      - ${CONF_DIR}/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ${CONF_DIR}/definitions.json:/etc/rabbitmq/definitions.json
+      - ${LOG_DIR}:/opt/log/rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+      - 4369:4369
+      - 25672:25672
+      - 15692:15692
+    extra_hosts:
+      - "rabbit-master:192.168.0.1"
+      - "rabbit-slave1:192.168.0.2"
+
+    healthcheck:
+      <<: *default-healthcheck
+      test: |
+        rabbitmq-diagnostics -q ping && \
+        rabbitmq-diagnostics -q check_port_connectivity && \
+        rabbitmq-diagnostics -q check_virtual_hosts

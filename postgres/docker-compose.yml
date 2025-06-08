@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16.3-alpine3.18
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: $PG_PASSWORD
+      POSTGRES_USER: $PG_ADMIN
+      POSTGRES_DB: airflow
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./logs:/logs
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+
+    restart: always
