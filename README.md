@@ -22,5 +22,6 @@ According to the [RabbitMQ documentation](https://www.rabbitmq.com/docs/clusteri
 ## Bonus
 This configuration uses Statsd-exporter to collect Airflow metrics, available at:
 [http://remote-host:9123/metrics](http://remote-host:9123/metrics)
+
 For RabbitMQ monitoring, refer to:
 [https://www.rabbitmq.com/docs/monitoring](https://www.rabbitmq.com/docs/monitoring)
