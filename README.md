@@ -1,4 +1,4 @@
-# Airflow_RabbitMQ_example
+# Airflow RabbitMQ Highly Available Cluster Docker Compose example
 ## Description
 This configuration example helps improve Airflow's fault tolerance by utilizing a highly available RabbitMQ cluster. The entire infrastructure (Airflow, RabbitMQ, and PostgreSQL) will be deployed using Docker Compose.
 
